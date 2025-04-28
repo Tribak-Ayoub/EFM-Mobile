@@ -39,6 +39,8 @@ fun TodoScreen(viewModel: TodoViewModel = viewModel()) {
     var expanded_inscrite by remember { mutableStateOf(false) }
     var expanded_add_priorite by remember { mutableStateOf(false) }
 
+    var validatorHasErrors by remember { mutableStateOf(false) }
+
     Column(modifier = Modifier.padding(16.dp)) {
         // Input field for adding a new inscrite
         Row(modifier = Modifier.fillMaxWidth()) {
@@ -46,7 +48,14 @@ fun TodoScreen(viewModel: TodoViewModel = viewModel()) {
                 value = newName,
                 onValueChange = { newName = it },
                 modifier = Modifier.weight(1f),
-                label = { Text("New Inscrite") }
+                label = { Text("New Inscrite") },
+                isError = validatorHasErrors,
+                supportingText = {
+                    if (validatorHasErrors) {
+                        Text("Username should not be blank.")
+                    }
+                }
+
             )
             Spacer(modifier = Modifier.width(8.dp))
         }
@@ -94,9 +103,11 @@ fun TodoScreen(viewModel: TodoViewModel = viewModel()) {
 
         Row(modifier = Modifier.fillMaxWidth()){
             Button(onClick = {
-                if (newName.isNotBlank()) {
+                if (newName.isNotBlank() && newStatut.isNotEmpty() && newPriorite.isNotEmpty()) {
                     viewModel.addInscrite(Inscrite(nom = newName, statut = newStatut, priorite = newPriorite))
                     newName = ""
+                }else{
+                    validatorHasErrors = true
                 }
             }) {
                 Text("Add")

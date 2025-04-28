@@ -33,8 +33,11 @@ class TodoViewModel : ViewModel() {
             try {
                 val newInscrite = RetrofitClient.api.createInscrite(inscrite)
                 _inscrites.value = _inscrites.value + newInscrite
-            } catch (e: Exception) {
-                // handle error
+            }catch (e: Exception) {
+                // Handle error: you could emit a placeholder item with error info, or handle in UI
+                _inscrites.value = listOf(
+                    Inscrite(id = -1, nom = "Error: ${e.message}", statut = "Error: ${e.message}", priorite = "Error: ${e.message}")
+                )
             }
         }
     }
@@ -50,8 +53,11 @@ class TodoViewModel : ViewModel() {
                 } else {
                     // handle API error (e.g., show error message)
                 }
-            } catch (e: Exception) {
-                // handle network or serialization error
+            }catch (e: Exception) {
+                // Handle error: you could emit a placeholder item with error info, or handle in UI
+                _inscrites.value = listOf(
+                    Inscrite(id = -1, nom = "Error: ${e.message}", statut = "Error: ${e.message}", priorite = "Error: ${e.message}")
+                )
             }
         }
     }
