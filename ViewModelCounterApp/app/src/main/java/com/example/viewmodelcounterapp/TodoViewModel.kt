@@ -22,7 +22,7 @@ class TodoViewModel : ViewModel() {
             } catch (e: Exception) {
                 // Handle error: you could emit a placeholder item with error info, or handle in UI
                 _todos.value = listOf(
-                    Todo(id = -1, title = "Error: ${e.message}", completed = false)
+                    Todo(id = -1, title = "Error: ${e.message}", completed = false, Priorite = "Error: ${e.message}")
                 )
             }
         }
