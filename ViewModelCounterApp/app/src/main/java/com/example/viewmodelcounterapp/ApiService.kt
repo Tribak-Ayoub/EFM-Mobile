@@ -9,15 +9,15 @@ import retrofit2.http.PUT
 import retrofit2.http.Path
 
 interface ApiService {
-    @GET("todos")
-    suspend fun getTodos(): List<Todo>
+    @GET("demande-inscri")
+    suspend fun getInscrites(): List<Inscrite>
 
-    @POST("todos")
-    suspend fun createTask(@Body todo: Todo): Todo
+    @POST("demande-inscri")
+    suspend fun createInscrite(@Body inscrite: Inscrite): Inscrite
 
-    @DELETE("todos/{id}")
-    suspend fun deleteTask(@Path("id") id: Int): Response<Unit>
+    @DELETE("demande-inscri/{id}")
+    suspend fun deleteInscrite(@Path("id") id: Int): Response<Unit>
 
-    @PUT("todos/{id}")
-    suspend fun updateTask(@Path("id") id: Int, @Body todo: Todo): Response<Unit>
+    @PUT("demande-inscri/{id}")
+    suspend fun updateInscrite(@Path("id") id: Int, @Body inscrite: Inscrite): Response<Unit>
 }

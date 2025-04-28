@@ -7,45 +7,45 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 class TodoViewModel : ViewModel() {
-    private val _todos = MutableStateFlow<List<Todo>>(emptyList())
-    val todos: StateFlow<List<Todo>> = _todos
+    private val _inscrites = MutableStateFlow<List<Inscrite>>(emptyList())
+    val inscrites: StateFlow<List<Inscrite>> = _inscrites
 
     init {
-        fetchTodos()
+        fetchInscrites()
     }
 
-    private fun fetchTodos() {
+    private fun fetchInscrites() {
         viewModelScope.launch {
             try {
-                val result = RetrofitClient.api.getTodos()
-                _todos.value = result
+                val result = RetrofitClient.api.getInscrites()
+                _inscrites.value = result
             } catch (e: Exception) {
                 // Handle error: you could emit a placeholder item with error info, or handle in UI
-                _todos.value = listOf(
-                    Todo(id = -1, title = "Error: ${e.message}", completed = false)
+                _inscrites.value = listOf(
+                    Inscrite(id = -1, nom = "Error: ${e.message}", statut = "Error: ${e.message}", priorite = "Error: ${e.message}")
                 )
             }
         }
     }
 
-    fun addTask(todo: Todo) {
+    fun addInscrite(inscrite: Inscrite) {
         viewModelScope.launch {
             try {
-                val newTask = RetrofitClient.api.createTask(todo)
-                _todos.value = _todos.value + newTask
+                val newInscrite = RetrofitClient.api.createInscrite(inscrite)
+                _inscrites.value = _inscrites.value + newInscrite
             } catch (e: Exception) {
                 // handle error
             }
         }
     }
 
-    fun updateTask(todo: Todo) {
+    fun updateInscrite(inscrite: Inscrite) {
         viewModelScope.launch {
             try {
-                val response = RetrofitClient.api.updateTask(todo.id, todo)
+                val response = RetrofitClient.api.updateInscrite(inscrite.id, inscrite)
                 if (response.isSuccessful) {
-                    _todos.value = _todos.value.map {
-                        if (it.id == todo.id) todo else it
+                    _inscrites.value = _inscrites.value.map {
+                        if (it.id == inscrite.id) inscrite else it
                     }
                 } else {
                     // handle API error (e.g., show error message)
@@ -56,12 +56,12 @@ class TodoViewModel : ViewModel() {
         }
     }
 
-    fun deleteTask(id: Int) {
+    fun deleteInscrite(id: Int) {
         viewModelScope.launch {
             try {
-                val response = RetrofitClient.api.deleteTask(id)
+                val response = RetrofitClient.api.deleteInscrite(id)
                 if (response.isSuccessful) {
-                    _todos.value = _todos.value.filter { it.id != id }
+                    _inscrites.value = _inscrites.value.filter { it.id != id }
                 }
             } catch (e: Exception) {
                 // handle error
